@@ -12,13 +12,15 @@ def home(request):
         {'name' : 'Lovely Pawara' , 'age' : 17},
     ]
 
-    return render(request , "home/index.html" , context= {'peoples' : peoples})
+    return render(request , "home/index.html" , context= {'page': 'Home', 'peoples' : peoples})
 
 def contact(request):
-    return render(request , "home/contact.html") 
+    
+    return render(request , "home/contact.html",context = {'page': 'Contact'} ) 
 
 def about(request):
-    return render(request , "home/about.html") 
+    
+    return render(request , "home/about.html", context = {'page': 'About'}) 
 
 def success_page(request):
     print("*" * 10)
