@@ -34,3 +34,11 @@ urlpatterns = [
     path('update-receipe/<id>/' , update_receipe , name="update_receipe"),
     path('admin/', admin.site.urls) 
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                           document_root=settings.MEDIA_ROOT)
+    
+
+urlpatterns += staticfiles_urlpatterns()
