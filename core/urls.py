@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from home.views import *
 from vege.views import *
+from django.conf.urls.static import static
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('' , home , name= "home" ), 
@@ -26,7 +29,7 @@ urlpatterns = [
     path('about/' , about , name= "about" ), 
     path('contact/' , contact , name= "contact" ), 
     path('receipes/' , receipes , name= "receipes"),
-    path('admin/', admin.site.urls),
 
-    
+    path('delete-receipe/<id>/' , delete_receipe , name="delete_receipe"),
+    path('admin/', admin.site.urls) 
 ]
