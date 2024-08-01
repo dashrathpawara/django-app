@@ -24,15 +24,15 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('' , home , name= "home" ), 
-
-    # path('success-page/' , success_page , name= "success_page" ), 
-    path('about/' , about , name= "about" ), 
-    path('contact/' , contact , name= "contact" ), 
     path('receipes/' , receipes , name= "receipes"),
+    
+    path('contact/' , contact , name= "contact" ), 
+    path('about/' , about , name= "about" ), 
 
     path('delete-receipe/<id>/' , delete_receipe , name="delete_receipe"),
     path('update-receipe/<id>/' , update_receipe , name="update_receipe"),
-    path('admin/', admin.site.urls) 
+
+    path('admin/', admin.site.urls) ,
 ]
 
 

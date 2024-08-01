@@ -5,10 +5,8 @@ from django.http import HttpResponse
 # Create your views here.
 
 def receipes(request):
-
     if request.method == "POST":
-        data = request.POST
-        
+        data = request.POST        
         receipe_image = request.FILES.get('receipe_image')
         receipe_name = data.get('receipe_name')
         receipe_description = data.get('receipe_description')
@@ -36,8 +34,8 @@ def update_receipe(request, id):
     if request.method == "POST":
         data = request.POST
         receipe_image = request.FILES.get('receipe_image')
-        receipe_name = data.get('receipe_name')
         receipe_description = data.get('receipe_description')
+        receipe_name = data.get('receipe_name')
 
         queryset.receipe_name = receipe_name
         queryset.receipe_description = receipe_description
@@ -45,7 +43,7 @@ def update_receipe(request, id):
         if receipe_image:
             queryset.receipe_image = receipe_image
         queryset.save()
-        return redirect('/receipe/receipe')
+        return redirect('/receipes/')
     
     context = { 'receipe' : queryset}
     return render(request , 'update_receipes.html' , context)
