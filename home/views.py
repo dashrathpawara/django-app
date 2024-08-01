@@ -22,8 +22,3 @@ def about(request):
     
     return render(request , "home/about.html", context = {'page': 'About'}) 
 
-def success_page(request):
-    print("*" * 10)
-    return HttpResponse(""" <h1> This is my KhapakhapDB </h1>
-    <p> must say that this is my second link to god
-    """)
