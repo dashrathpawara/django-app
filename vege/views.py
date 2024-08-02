@@ -17,13 +17,12 @@ def receipes(request):
             receipe_description = receipe_description
         )
         return redirect('/receipes/')
+    
     queryset = Receipe.objects.all()
 
     if request.GET.get('search'):
         queryset = queryset.filter(receipe_name__icontains = request.GET.get('search'))
-        
-
-
+    
     context = {'receipes' : queryset}
     return render (request , 'receipes.html', context)
 
