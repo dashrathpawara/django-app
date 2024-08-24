@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'dashrathpawara/vege-receipe:latest'
-             args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+             args '--user appuser -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
         }
     }
     environment {
