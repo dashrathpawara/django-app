@@ -12,7 +12,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/dashrathpawara/django-app.git'
+                sh 'echo passed'
+                //git branch: 'main', url:  'https://github.com/dashrathpawara/django-app.git'
             }
         }
         stage('Build') {
