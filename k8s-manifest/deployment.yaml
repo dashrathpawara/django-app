@@ -5,7 +5,7 @@ metadata:
   labels:
     app: vege-receipe
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: vege-receipe
@@ -19,8 +19,18 @@ spec:
         image: dashrathpawara/vege-receipe:latest
         ports:
         - containerPort: 8000
-        env:
-        - name: DJANGO_SETTINGS_MODULE
-          value: "your_project.settings"
-        - name: DATABASE_URL
-          value: "your_database_url"
+          resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        securityContext:
+          runAsUser: 5678
+          runAsGroup: 3000
+          fsGroup: 2000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
