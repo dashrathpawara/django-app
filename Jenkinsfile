@@ -28,6 +28,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        ls -lrth
                         sh 'docker build -t ${DOCKER_IMAGE} .'
                         def dockerImage = docker.image("${DOCKER_IMAGE}")
                         docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_USERNAME}:${DOCKER_PASSWORD}") {
