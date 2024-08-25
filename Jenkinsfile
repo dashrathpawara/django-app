@@ -7,12 +7,11 @@ pipeline {
     }    
     stages {
         stage('Checkout') {
-            steps {
-                sh 'echo passed'
-                cleanWs()
-                    git 'https://github.com/dashrathpawara/django-app.git'
-            }
-        }
+    steps {
+        git url: 'https://github.com/dashrathpawara/django-app.git', branch: 'main', changelog: true, poll: true
+    }
+}
+
         stage('Build and Test') {
             steps {
                 sh 'ls -ltr'
