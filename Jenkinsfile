@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build and Push Docker Image') {
             environment {
-                DOCKER_IMAGE = "${env.IMAGE_NAME}:${BUILD_NUMBER}"
+                DOCKER_IMAGE = "dashrathpawara/vege-receipe:${BUILD_NUMBER}"
                 REGISTRY_CREDENTIALS = credentials('dockerhub-credentials')
             }
             steps {
@@ -48,3 +48,4 @@ def getNextVersion() {
     patch = patch.toInteger() + 1
     return "${major}.${minor}.${patch}"
 }
+
