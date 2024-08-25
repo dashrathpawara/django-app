@@ -5,34 +5,33 @@ pipeline {
              args '--user appuser -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
         }
     }
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        IMAGE_NAME = 'dashrathpawara/vege-receipe'
-    }
+    
     stages {
         stage('Checkout') {
             steps {
-                sh 'echoo passed'
+                sh 'echo passed'
                 git 'https://github.com/dashrathpawara/django-app.git'
             }
         }
-        stage('Build') {
+        stage('Build and Push Docker Image') {
+            environment {
+                IMAGE_NAME = "dashrathpawara/vege-receipe:${getNextVersion()}"
+                DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+                
+            }
             steps {
                 script {
                     def version = getNextVersion()
                     sh "docker build -t ${env.IMAGE_NAME}:${version} ."
                 }
             }
-        }
-        stage('Push') {
             steps {
                 script {
                     def version = getNextVersion()
-                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
-                    sh "docker push ${env.IMAGE_NAME}:${version}"
+                    docker.withRegistry('https://index.docker.io/v1/', "dockerhub-credentials") {
+                    dockerImage.push()
                 }
             }
-        }
         stage('Post-Build') {
             steps {
                 echo "Build and push completed for version ${getNextVersion()}"
