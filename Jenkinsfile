@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'dashrathpawara/vege-receipe:latest'
-             args '--user appuser -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+            image 'dashrathpawara/vege-receipe:1'
+             args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
         }
     }    
     stages {
