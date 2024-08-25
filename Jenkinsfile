@@ -33,6 +33,7 @@ pipeline {
                         docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_USERNAME}:${DOCKER_PASSWORD}") {
                             dockerImage.push()
                         }
+                    }
                 }
             }
         }
@@ -49,4 +50,3 @@ def getNextVersion() {
     patch = patch.toInteger() + 1
     return "${major}.${minor}.${patch}"
 }
-
