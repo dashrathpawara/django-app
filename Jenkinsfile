@@ -40,10 +40,11 @@ pipeline {
                 echo "Build and push completed for version ${getNextVersion()}"
             }
         }
+    }
+}
 def getNextVersion() {
     def version = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
     def (major, minor, patch) = version.tokenize('.')
     patch = patch.toInteger() + 1
     return "${major}.${minor}.${patch}"
-}
 }
