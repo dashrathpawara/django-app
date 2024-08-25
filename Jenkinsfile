@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 sh 'echo passed'
-                git 'https://github.com/dashrathpawara/django-app.git'
+                git branch: 'main', url: 'https://github.com/dashrathpawara/django-app.git'
             }
         }
         stage('Build and Test') {
