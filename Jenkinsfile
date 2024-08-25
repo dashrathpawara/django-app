@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build and Push Docker Image') {
             environment {
-                DOCKER_IMAGE = "dashrathpawara/vege-receipe:${BUILD_NUMBER}"
+                DOCKER_IMAGE = 'dashrathpawara/vege-receipe:${env.BUILD_NUMBER}'
                 REGISTRY_CREDENTIALS = credentials('dockerhub-credentials')
             }
             steps {
