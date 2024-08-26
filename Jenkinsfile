@@ -6,7 +6,8 @@ pipeline {
         }
     }    
     environment {
-        DOCKER_IMAGE = "dashrathpawara/vege-receipe:${getNextVersion()}"
+        // REGISTRY_CREDENTIALS = credentials('dockerhub-credentials') // Docker Hub credentials
+        DOCKER_IMAGE = "dashrathpawara/vege-receipe:${env.BUILD_NUMBER}"
     }
     stages {
         stage('Checkout') {
@@ -24,7 +25,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage(' Build Docker Image') {
             steps {
                 script {
                     // Build the Docker image
@@ -46,7 +47,7 @@ pipeline {
 
         stage('Post-Build') {
             steps {
-                echo "Build and push completed for version ${DOCKER_IMAGE.split(':')[1]}"
+                echo "Build and push completed for version ${env.BUILD_NUMBER}"
             }
         }
     }
@@ -57,12 +58,4 @@ pipeline {
             sh "docker rmi ${DOCKER_IMAGE}"
         }
     }
-}
-
-// Function to calculate the next version based on the latest Git tag
-def getNextVersion() {
-    def version = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
-    def (major, minor, patch) = version.tokenize('.')
-    patch = patch.toInteger() + 1
-    return "${major}.${minor}.${patch}"
 }
