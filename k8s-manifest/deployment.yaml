@@ -19,18 +19,10 @@ spec:
         image: dashrathpawara/vege-receipe:4
         ports:
         - containerPort: 8000
-          resources:
+        resources:
           limits:
             memory: "512Mi"
             cpu: "500m"
           requests:
             memory: "256Mi"
             cpu: "250m"
-        securityContext:
-          runAsUser: 5678
-          runAsGroup: 3000
-          fsGroup: 2000
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
