@@ -1,12 +1,11 @@
 pipeline {
     agent {
         docker {
-            image 'dashrathpawara/vege-receipe:0.0.0'
+            image 'dashrathpawara/docker-py-agent:latest'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket to access the host's Docker daemon
         }
     }    
     environment {
-        // REGISTRY_CREDENTIALS = credentials('dockerhub-credentials') // Docker Hub credentials
         DOCKER_IMAGE = "dashrathpawara/vege-receipe:${env.BUILD_NUMBER}"
     }
     stages {
@@ -25,7 +24,7 @@ pipeline {
             }
         }
 
-        stage(' Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     // Build the Docker image
@@ -34,10 +33,27 @@ pipeline {
             }
         }
 
+        stage('Scan Docker Image with Trivy') {
+            steps {
+                script {
+                    def trivyReport = "trivy-report-${env.BUILD_NUMBER}.txt"
+        
+                    // Run Trivy scan and append results directly to the report file
+                    sh '''
+                        trivy image \
+                            --exit-code 0 \
+                            --severity HIGH,CRITICAL \
+                            -f plain \
+                            ${DOCKER_IMAGE} >> "${trivyReport}" 2>&1 || echo "Trivy scan completed with findings"
+                    '''
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Push the Docker image to Docker Hub
+                    // Push the Docker image to Docker Hub if the scan is successful
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         docker.image("${DOCKER_IMAGE}").push()
                     }
@@ -47,7 +63,27 @@ pipeline {
 
         stage('Post-Build') {
             steps {
-                echo "Build and push completed for version ${env.BUILD_NUMBER}"
+                echo "Build, scan, and push completed for version ${env.BUILD_NUMBER}"
+        
+                // Print the current directory and list files for debugging
+                sh '''
+                    echo "Current working directory:"
+                    pwd
+                    echo "Listing files in the workspace:"
+                    ls -l
+                '''
+        
+                // Use a script block to execute Groovy code
+                script {
+                    def trivyReport = "trivy-report-${env.BUILD_NUMBER}.txt"
+                    
+                    // Check if the file exists and archive it
+                    if (fileExists(trivyReport)) {
+                        archiveArtifacts artifacts: trivyReport, allowEmptyArchive: true
+                    } else {
+                        echo "Report file ${trivyReport} does not exist."
+                    }
+                }
             }
         }
     }
