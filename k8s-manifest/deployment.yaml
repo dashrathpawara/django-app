@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: vege-receipe
-        image: dashrathpawara/vege-receipe:latest
+        image: dashrathpawara/vege-receipe:4
         ports:
         - containerPort: 8000
           resources:
